@@ -23,6 +23,7 @@ jobs:
         with:
           node-version: 22.14.0
       - run: node -v
+      - run: npm ci
       - name: build next.js
         run: |
           npm run build
