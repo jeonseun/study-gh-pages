@@ -1,0 +1,14 @@
+name: deploy next.js blog to github pages
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v4
+      - name: echo os version
+        run: lsb_release -a
