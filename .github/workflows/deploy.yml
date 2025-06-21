@@ -1,8 +1,7 @@
-name: deploy next.js blog to github pages
+name: Deploy next.js blog to github pages
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -10,5 +9,3 @@ jobs:
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
-      - name: echo os version
-        run: lsb_release -a
