@@ -16,3 +16,5 @@ jobs:
           echo "name=seun" >> $GITHUB_OUTPUT
       - name: print outputs
         run: echo ${{ steps.check-env.outputs.name }}
+      - name: check default node version
+        run: node -v
