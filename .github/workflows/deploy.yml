@@ -9,3 +9,7 @@ jobs:
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
+      - name: check env variable
+        run: |
+          echo $GITHUB_OUTPUT
+          echo ${{ github.workspace }}
