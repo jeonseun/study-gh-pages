@@ -14,4 +14,5 @@ jobs:
           echo GITHUB_OUTPUT = ${GITHUB_OUTPUT}
           echo github.workspace = ${{ github.workspace }}
           echo "name=seun" >> $GITHUB_OUTPUT
-          echo ${{ steps.check-env.outputs.name }}
+      - name: print outputs
+        run: echo ${{ steps.check-env.outputs.name }}
