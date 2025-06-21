@@ -32,10 +32,13 @@ jobs:
       - name: build next.js
         run: |
           npm run build
+      - name: generate .nojekyll
+        run: touch .nojekyll
       - name: upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: .next
+
   deploy:
     runs-on: ubuntu-latest
     needs: build
