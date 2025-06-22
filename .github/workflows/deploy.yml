@@ -27,14 +27,13 @@ jobs:
         with:
           node-version: 22.14.0
           cache: npm
-           - name: configure ssg
+      - name: configure ssg
         uses: actions/configure-pages@v5
         with:
           static_site_generator: next
-     
+
       - name: install dependency
         run: npm ci
-
 
       - name: build next.js
         run: npm run build
