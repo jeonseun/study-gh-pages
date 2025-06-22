@@ -1,0 +1,74 @@
+name: Cache Debug Workflow
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  debug-cache:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 캐시 상태 확인
+      - name: Check cache before setup
+        run: |
+          echo "=== 캐시 상태 확인 ==="
+          echo "Runner temp: $RUNNER_TEMP"
+          echo "Runner tool cache: $RUNNER_TOOL_CACHE"
+          ls -la ~/.npm || echo "npm 캐시 디렉토리 없음"
+
+      # 시간 측정 시작
+      - name: Record start time
+        run: echo "START_TIME=$(date +%s)" >> $GITHUB_ENV
+
+      # Node.js 설정 (캐시 포함)
+      - name: Setup Node.js with cache
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
+
+      # 캐시 상태 재확인
+      - name: Check cache after setup
+        run: |
+          echo "=== Node.js 설정 후 캐시 상태 ==="
+          ls -la ~/.npm || echo "npm 캐시 디렉토리 없음"
+          npm config get cache
+
+      # 의존성 설치 시간 측정
+      - name: Install dependencies with timing
+        run: |
+          echo "=== 의존성 설치 시작 ==="
+          time npm ci --verbose
+          echo "=== 의존성 설치 완료 ==="
+
+      # 설치 후 상태 확인
+      - name: Check installation results
+        run: |
+          echo "=== 설치 결과 확인 ==="
+          echo "node_modules 크기:"
+          du -sh node_modules/ || echo "node_modules 없음"
+          echo "의존성 개수:"
+          npm ls --depth=0 | wc -l
+          echo "캐시 크기:"
+          du -sh ~/.npm || echo "캐시 디렉토리 없음"
+
+      # 총 소요 시간 계산
+      - name: Calculate total time
+        run: |
+          END_TIME=$(date +%s)
+          DURATION=$((END_TIME - START_TIME))
+          echo "총 소요 시간: ${DURATION}초"
+          echo "TOTAL_DURATION=${DURATION}" >> $GITHUB_ENV
+
+      # 캐시 키 정보 확인
+      - name: Show cache key info
+        run: |
+          echo "=== 캐시 키 정보 ==="
+          echo "OS: ${{ runner.os }}"
+          echo "Node version: 18"
+          echo "Package-lock hash:"
+          sha256sum package-lock.json || echo "package-lock.json 없음"
