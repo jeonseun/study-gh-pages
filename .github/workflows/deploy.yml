@@ -29,13 +29,13 @@ jobs:
       - name: install dependency
         run: npm ci
 
-      - name: build next.js
-        run: npm run build
-
       - name: configure ssg
         uses: actions/configure-pages@v5
         with:
           static_site_generator: next
+
+      - name: build next.js
+        run: npm run build
 
       - name: upload artifact
         uses: actions/upload-pages-artifact@v3
