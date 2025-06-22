@@ -13,7 +13,7 @@ export default function Page() {
   return (
     <>
       <h1>hello page</h1>
-      <Link href={'/'}>link</Link>
+      <Link href="/">link</Link>
       <span></span>
       {envVars.repository}
     </>
