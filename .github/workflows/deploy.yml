@@ -1,6 +1,9 @@
 name: Deploy next.js blog to github pages
 
 on:
+  push:
+    branches: [main]
+
   workflow_dispatch:
 
 permissions:
@@ -8,34 +11,29 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: 'pages'
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: checkout repository
         uses: actions/checkout@v4
-      - id: check-env
-        run: |
-          echo GITHUB_OUTPUT = ${GITHUB_OUTPUT}
-          echo github.workspace = ${{ github.workspace }}
-          echo "name=seun" >> $GITHUB_OUTPUT
-      - name: print outputs
-        run: echo ${{ steps.check-env.outputs.name }}
-      - name: check default node version
-        run: node -v
+
       - name: setup node
         uses: actions/setup-node@v4
         with:
           node-version: 22.14.0
-      - run: node -v
-      - run: npm ci
+      - name: install dependency
+        run: npm ci
+
       - name: build next.js
-        run: |
-          npm run build
-      - name: generate .nojekyll
-        run: touch .nojekyll
+        run: npm run build
+
       - name: upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: .next
 
