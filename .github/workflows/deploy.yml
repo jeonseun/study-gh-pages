@@ -32,6 +32,11 @@ jobs:
       - name: build next.js
         run: npm run build
 
+      - name: configure ssg
+        uses: actions/configure-pages@v5
+        with:
+          static_site_generator: next
+
       - name: upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
