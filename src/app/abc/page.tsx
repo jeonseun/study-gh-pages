@@ -7,7 +7,7 @@ export default function Page() {
     workflow: process.env.GITHUB_WORKFLOW,
     runId: process.env.GITHUB_RUN_ID,
     ref: process.env.GITHUB_REF,
-    action: process.env.GITHUB_ACTION,
+    action: process.env.GITHUB_BASE_PATH,
   };
 
   return (
